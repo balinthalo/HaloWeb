@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function(){
     });
 
     Route::get('/logout',[AuthenticationController::class,'logout'])->name('logout');
+
 });
 
 
@@ -66,5 +67,9 @@ Route::middleware(['guest'])->controller(AuthenticationController::class)->group
     Route::get('registration', 'showRegistration')->name('registration');
     Route::post('login/login','login')->name('loginAuth');
     Route::post('registration/reg','registration')->name('registrationAuth');
+
+    Route::get('terms&services', function(){
+        return view('components.terms&services');
+    })->name('terms&services');
 });
 

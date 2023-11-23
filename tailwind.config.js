@@ -7,7 +7,9 @@ export default {
         "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     ],
     theme: {
-        extend: {},
+        extend: {
+            display: ["group-hover"],
+        },
     },
     variants: {
         fill: ['hover', 'focus'],

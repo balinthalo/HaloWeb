@@ -19,24 +19,22 @@
             @if (!$sub_topics->isEmpty())
                 <div class="text-2xl my-4">Sub Topics</div>
                 @foreach ($sub_topics as $topic)
-                    <div class="grid grid-cols-6 py-2 px-3 sm:w-1/2 md:w-1/3 lg:w-1/2 w-5/6 bg-slate-200 hover:bg-slate-300">
+                    <div hw-click-to-topic="{{$topic}}" class="cursor-pointer grid grid-cols-6 py-2 px-3 sm:w-4/5 md:w-2/3 lg:w-3/4 w-5/6 bg-slate-200 hover:bg-slate-300">
                         <a class="col-span-2" href="{{route('post.index', $topic->id)}}">{{$topic->title}}</a>
-                        <div class="flex gap-2 justify-self-end">
-                            <div class="pt-3"><img src="/images/profile.jpg" alt="profile" width="20" height="20" class="rounded-full"></div>
-                            <div class="pt-2">by {{$topic->user->name}}</div>
-                        </div>
+                        <a href="{{route('user.show', ['user_id' => $topic->user->id])}}" class="flex gap-2 justify-self-end">
+                            <div>
+                                @include('layouts.profile', ['user' => $topic->user, 'class' => 'rounded-full w-[20px] h-[20px] mt-3'])
+                            </div>
+                            <div class="pt-2 break-all">by {{$topic->user->name}}</div>
+                        </a>
                         <div class="justify-self-end">
                             <div>Posts {{$topic->posts->count()}}</div>
                             <div>Topic {{$topic->where('parent_id', $topic->id)->count()}}</div>
                         </div>
                         <div class="justify-self-end pt-2">
-                            @if (\Carbon\Carbon::parse($topic->created_at)->diffInDays(\Carbon\Carbon::now(), false) < 7)
-                                {{date('l', strtotime($topic->created_at))}}
-                            @else
-                                {{date('Y M.d.', strtotime($topic->created_at))}}
-                            @endif
+                            @include('components.date', ['data' => $topic])
                         </div>
-                        @if (auth()->user()->id === 1 || $topic->user_id == auth()->user()->id)
+                        @if (auth()->user()->id === 1 || $topic->user->id == auth()->user()->id)
                             <div class="flex justify-end">
                                 <form class="" action="{{route('topic.delete', $topic->id)}}" method="post">
                                     @csrf
@@ -59,24 +57,22 @@
             @if (!$posts->isEmpty())
                 <div class="text-2xl my-4">Posts</div>
                 @foreach ($posts as $post)
-                    <div class="grid grid-cols-6 w-2/5 bg-slate-200 hover:bg-slate-300 shadow-lg py-2 px-3">
-                        <a class="col-span-2" href="{{route('post.show', ["post" => $post->id, "topic" => $topic->id])}}">
+                    <div hw-click-to-topic="{{$post}}" class="cursor-pointer grid grid-cols-6 sm:w-4/5 md:w-2/3 lg:w-3/4 w-5/6 bg-slate-200 hover:bg-slate-300 shadow-lg py-2 px-3">
+                        <a class="col-span-2" href="{{route('post.show', ["post" => $post->id, "topic" => $post->topic->id])}}">
                             <p class="text-lg font-medium">{{$post->title}}</p>
                             <p class="pl-4">{{Str::limit($post->text, 30, '...')}}</p>
                         </a>
-                        <div class="flex gap-2 justify-self-end">
-                            <div class="pt-3"><img src="/images/profile.jpg" alt="profile" width="20" height="20" class="rounded-full"></div>
+                        <a href="{{route('user.show', ['user_id' => $post->user->id])}}" class="flex gap-2 justify-self-end">
+                            <div>
+                                @include('layouts.profile', ['user' => $topic->user, 'class' => 'rounded-full w-[20px] h-[20px] mt-3'])
+                            </div>
                             <div class="pt-2"> by {{$post->user->name}} </div>
-                        </div>
+                        </a>
                         <div class="justify-self-end pt-2">Comments {{$post->comments->count()}}</div>
                         <div class="justify-self-end pt-2">
-                            @if (\Carbon\Carbon::parse($post->created_at)->diffInDays(\Carbon\Carbon::now(), false) < 7)
-                                {{date('l', strtotime($post->created_at))}}
-                            @else
-                                {{date('Y M.d.', strtotime($post->created_at))}}
-                            @endif
+                            @include('components.date', ['data' => $post])
                         </div>
-                        @if (auth()->user()->id === 1 || $post->user_id == auth()->user()->id)
+                        @if (auth()->user()->id === 1 || $post->user->id == auth()->user()->id)
                             <div class="flex justify-end">
                                 <form action="{{route('post.delete', ["post" => $post->id, "topic" => $topic->id])}}" method="POST">
                                     @csrf

@@ -24,8 +24,9 @@ class UserController extends Controller
 
     public function show (Request $request)
     {
+        $user = User::find($request->user_id);
         return view('users.dashboard')->with([
-            'user' => $request->user()
+            'user' => $user
         ]);
     }
 

@@ -5,26 +5,20 @@
     </div>
     <div class="flex flex-col items-center mt-5 text-lg">
         @foreach ($topics as $topic)
-            <div class="grid grid-cols-6 sm:w-4/5 md:w-2/3 lg:w-3/4 w-5/6 shadow-lg bg-slate-200 hover:bg-slate-300">
+            <div hw-click-to-topic="{{$topic}}" class="cursor-pointer grid grid-cols-6 sm:w-4/5 md:w-2/3 lg:w-3/4 w-5/6 shadow-lg bg-slate-200 hover:bg-slate-300">
                 <div class="flex gap-2 py-2 px-3 break-all col-span-2">
                     <a href="{{route('post.index', $topic->id)}}">{{$topic->title}}</a>
                 </div>
-                <a href="{{route('user.show', ['user' => $topic->user, 'user_id' => $topic->user->id])}}" class="justify-self-end flex gap-2 py-2 px-3 break-all col-span-1">
-                    <div class="pt-3">
-                        <img src="/images/profile.jpg" alt="profile" width="20" height="20" class="rounded-full">
-                    </div>
-                    <div class="pt-2">by {{$topic->user->name}}</div>
+                <a href="{{route('user.show', ['user_id' => $topic->user->id])}}" class="w-full flex gap-2">
+                    @include('layouts.profile', ['user' => $topic->user, 'class' => 'rounded-full w-[20px] h-[20px] mt-3'])
+                    <div class="pt-2 break-all">by {{$topic->user->name}}</div>
                 </a>
                 <div class="py-2 px-3 justify-self-end">
                     <div>Posts {{$topic->posts->count()}}</div>
                     <div>Topics {{$topic->where('parent_id', $topic->id)->count()}}</div>
                 </div>
                 <div class="py-4 px-3 justify-self-end">
-                    @if (\Carbon\Carbon::parse($topic->created_at)->diffInDays(\Carbon\Carbon::now(), false) < 7)
-                        {{date('l', strtotime($topic->created_at))}}
-                    @else
-                        {{date('Y M.d.', strtotime($topic->created_at))}}
-                    @endif
+                    @include('components.date', ['data' => $topic])
                 </div>
                 @if (auth()->user()->id === 1 || $topic->user_id === auth()->user()->id)
                     <div class="flex flex-col py-4 px-3 justify-self-end">

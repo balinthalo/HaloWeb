@@ -37,7 +37,8 @@ class AuthenticationController extends Controller
         $request->validate([
             'email' => ['required'],
             'name' => ['required'],
-            'password' => ['required']
+            'password' => ['required'],
+            'terms&services' => ['accepted']
         ]);
 
         $data['name'] = $request->name;
@@ -50,8 +51,9 @@ class AuthenticationController extends Controller
         if(!$user) {
             return back()->withErrors([
                 'email' => 'The given email is not valid!',
-                'name' => 'The given username is not correct!',
-                'password' => 'The given email is not correct!'
+                'name' => 'The given username is not correct! (Maximum 50 character)',
+                'password' => 'The given email is not correct!',
+                'terms&services' => 'Please accept our terms and services.'
             ]);
         }
 

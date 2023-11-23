@@ -21,6 +21,10 @@
             </div>
             <input class="p-2 bg-slate-50 placeholder:text-black" type="password" name="password" placeholder="password">
         </div>
+        <div class="flex px-5 gap-2">
+            <input type="checkbox" name="terms&services">
+            <a href="{{route('terms&services')}}">I accept Terms and Services</a>
+        </div>
         <div class="p-4 flex justify-between">
             <input class="bg-green-500 p-2 hover:text-gray-100 text-gray-900 rounded-xl" type="submit" value="registration">
             <a class="p-2 text-slate-400 hover:text-slate-700" href="{{route('login')}}">Have already account?</a>

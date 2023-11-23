@@ -1,14 +1,17 @@
 @extends('components.base')
 @section('content')
-    <div class="flex flex-col items-center gap-2">
-        <div id="output" class="flex py-2 px-3 w-1/5 bg-slate-500 rounded-lg break-all">{{$topic}}</div>
-        <form class="flex flex-col w-1/5 gap-2" action="{{route('topic.update', $id)}}" method="POST">
+<div class="flex items-center justify-center mt-10">
+    <div class="grid grid-cols-12">
+        <form class="grid col-span-11 gap-4 bg-slate-200 p-8 place-items-center" action="{{route('topic.update', $id)}}" method="POST">
             @csrf
             {{method_field('PUT')}}
-            <input id="input" class="px-3 py-2 rounded-xl w-full" type="text" placeholder="{{$topic}}" value="{{$topic}}" name="title">
+            <label>change topic title</label>
+            <input id="input" class="px-3 py-2 w-full" type="text" placeholder="{{$topic}}" value="{{$topic}}" name="title">
             <div class="flex justify-center">
-                <input onclick="publish()" class="bg-green-500 px-3 py-2 rounded-xl text-slate-950 hover:text-slate-50" type="submit" value="SAVE">
+                <input onclick="publish()" class="bg-green-500 px-3 py-2 rounded-xl text-slate-950 hover:text-slate-50 cursor-pointer" type="submit" value="SAVE">
             </div>
         </form>
+        <div class="bg-blue-400"></div>
     </div>
+</div>
 @endsection

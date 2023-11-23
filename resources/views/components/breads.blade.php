@@ -18,8 +18,10 @@
         </a>
         @endforeach
     </div> --}}
-    @if (Request::url() !== route('topic.index'))
-        <button onclick="history.back()" class="px-4 py-2 text-xl"> <<< Back </button>
-    @endif
-
+    <div class="flex flex-col items-start py-2 px-4 gap-2">
+        @if (Request::url() !== route('topic.index'))
+            <button onclick="window.location = '/';" class="text-xl">Home</button>
+        @endif
+        <button onclick="history.back()" class="text-xl"> <<< Back </button>
+    </div>
 @endauth
